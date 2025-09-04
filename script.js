@@ -51,6 +51,7 @@ for (i = 0; i < combattenti.length; i++) {
 
     console.log(`${combattenti[i].nome} ha scelto l'arma: ${armi[arma]}`);
 }
+console.log("\n");
 
 // Fase 2 - 💪 Allenamento
 
@@ -69,6 +70,7 @@ for (i = 0; i < combArmati.length; i++) {
     console.log(`${combArmati[i].nome} si è allenato, la sua nuova potenza è: ${combArmati[i].potenza}`);
 
 }
+console.log("\n");
 
 // Fase 3 -  🎯 Qualificazione
 
@@ -82,4 +84,49 @@ for (i = 0; i < combArmati.length; i++) {
     }
 
     console.log(`Qualificato per il torneo: ${combArmati[i].nome} potenza: ${combArmati[i].potenza}`);
+
 }
+console.log("\n");
+
+// Fase 4 - ⚔️ Combattimento
+
+console.log("### COMBATTIMENTO ###");
+
+// controllo il numero dei qualificati
+if (combArmati.length % 2 != 0) {
+
+    // se dispari aggiungo un robot come combattente
+    combArmati.push({
+        nome: "Robot",
+        potenza: 4000,
+        arma: "Laser Blaster"
+    });
+
+    // visualizzo il robot
+    const ultimo = combArmati[combArmati.length - 1];
+    console.log(`I partecipanti qualificati sono dispari, viene aggiunto: ${ultimo.nome} con potenza ${ultimo.potenza} e arma ${ultimo.arma}`);
+    console.log("\n");
+
+}
+
+// se sono pari faccio partire i combattimenti
+
+// ciclo sui combattenti selezionandoli a due a due
+for (i = 0; i < combArmati.length; i += 2) {
+
+    // salvo i due combattenti
+    let primo = combArmati[i];
+    let secondo = combArmati[i + 1];
+    let vincitore;
+
+    if (primo.potenza < secondo.potenza) {
+        vincitore = secondo;
+    } else if (primo.potenza > secondo.potenza) {
+        vincitore = primo;
+    } else {
+        vincitore = primo;
+    }
+
+    console.log(`Incontro: ${primo.nome} VS ${secondo.nome} il vincitore è ${vincitore.nome}`);
+}
+
