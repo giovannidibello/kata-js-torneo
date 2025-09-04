@@ -39,9 +39,10 @@ console.log("### SCELTA ARMA ###");
 
 for (i = 0; i < combattenti.length; i++) {
 
+    // prendo in modo random un arma
     let arma = Math.floor(Math.random() * armi.length);
 
-    // Creo un nuovo oggetto che unisce combattente e arma
+    // creo un nuovo oggetto che unisce combattente e arma
     combArmati.push({
         nome: combattenti[i].nome,
         potenza: combattenti[i].potenza,
@@ -57,11 +58,28 @@ console.log("### ALLENAMENTO ###");
 
 for (i = 0; i < combArmati.length; i++) {
 
+    // allenamento conterrà un numero random tra 1 e 100
     let allenamento = Math.floor(Math.random() * 100) + 1;
+    // moltiplico la potenza del combattente per l'allenamento 
     let nuovaPotenza = combArmati[i].potenza * allenamento;
 
+    // assegno la nuova potenza al combattente
     combArmati[i].potenza = nuovaPotenza;
 
     console.log(`${combArmati[i].nome} si è allenato, la sua nuova potenza è: ${combArmati[i].potenza}`);
 
+}
+
+// Fase 3 -  🎯 Qualificazione
+
+console.log("### QUALIFICAZIONE ###");
+
+for (i = 0; i < combArmati.length; i++) {
+
+    // se la potenza del combattente è minore di 2000 lo escludo dal torneo
+    if (combArmati[i].potenza < 2000) {
+        combArmati.splice(i, 1);
+    }
+
+    console.log(`Qualificato per il torneo: ${combArmati[i].nome} potenza: ${combArmati[i].potenza}`);
 }
