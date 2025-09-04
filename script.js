@@ -30,11 +30,16 @@ const armi = [
     "Falce Oscura"
 ];
 
+// Combattenti con le armi
+const combArmati = [];
+
 // Fase 1 - 🔥 Scelta dell'Arma
+
+console.log("### SCELTA ARMA ###");
+
 for (i = 0; i < combattenti.length; i++) {
 
     let arma = Math.floor(Math.random() * armi.length);
-    const combArmati = [];
 
     // Creo un nuovo oggetto che unisce combattente e arma
     combArmati.push({
@@ -44,7 +49,19 @@ for (i = 0; i < combattenti.length; i++) {
     });
 
     console.log(`${combattenti[i].nome} ha scelto l'arma: ${armi[arma]}`);
-
 }
 
 // Fase 2 - 💪 Allenamento
+
+console.log("### ALLENAMENTO ###");
+
+for (i = 0; i < combArmati.length; i++) {
+
+    let allenamento = Math.floor(Math.random() * 100) + 1;
+    let nuovaPotenza = combArmati[i].potenza * allenamento;
+
+    combArmati[i].potenza = nuovaPotenza;
+
+    console.log(`${combArmati[i].nome} si è allenato, la sua nuova potenza è: ${combArmati[i].potenza}`);
+
+}
