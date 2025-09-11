@@ -102,169 +102,249 @@ const weapons = [
     }
 ];
 
-// recupero il contenitore dal DOM dove mostrerò i combattenti e gli incontri e il podio
+// recupero il contenitore dal DOM dove mostrerò il torneo
 const fightersList = document.getElementById("combattenti");
-const matchList = document.getElementById("incontri");
-const winnersList = document.getElementById("premiazione");
 
-// Combattenti con le armi
+// array per il torneo
 const armedFighters = [];
-
-// Fase 1 - 🔥 Scelta dell'Arma
-
-console.log("### SCELTA ARMA ###");
-
-for (i = 0; i < fighters.length; i++) {
-
-    // prendo in modo random un arma
-    let randomIndex = Math.floor(Math.random() * weapons.length);
-    let weapon = weapons[randomIndex];
-
-    // creo un nuovo oggetto che unisce combattente e arma
-    armedFighters.push({
-        name: fighters[i].name,
-        power: fighters[i].power,
-        weapon: weapon.name,
-        weaponPower: weapon.power
-    });
-
-    // aggiungo in pagina i combattenti
-    let p = document.createElement("p");
-    p.innerHTML = `Combattente: <strong>${armedFighters[i].name}</strong> - Potenza: <strong>${armedFighters[i].power}</strong> - Arma: <strong>${armedFighters[i].weapon}</strong> - Potenza Arma: <strong>${armedFighters[i].weaponPower}</strong>`;
-    fightersList.appendChild(p);
-
-    console.log(`${fighters[i].name} ha scelto l'arma: ${weapon.name} con potenza: ${weapon.power}`);
-}
-console.log("\n");
-
-// Fase 2 - 💪 Allenamento
-
-console.log("### ALLENAMENTO ###");
-
-for (i = 0; i < armedFighters.length; i++) {
-
-    // allenamento conterrà un numero random tra 1 e 100
-    let training = Math.floor(Math.random() * 100) + 1;
-    // moltiplico la potenza del combattente per l'allenamento 
-    let newPower = armedFighters[i].power * training;
-
-    // assegno la nuova potenza al combattente
-    armedFighters[i].power = newPower + armedFighters[i].weaponPower;
-
-    console.log(`${armedFighters[i].name} si è allenato, la sua nuova potenza è: ${armedFighters[i].power}`);
-
-}
-console.log("\n");
-
-// Fase 3 -  🎯 Qualificazione
-
-console.log("### QUALIFICAZIONE ###");
-
-for (i = 0; i < armedFighters.length; i++) {
-
-    // se la potenza del combattente è minore di 2000 lo escludo dal torneo
-    if (armedFighters[i].power < 2000) {
-        armedFighters.splice(i, 1);
-    }
-
-    console.log(`Qualificato per il torneo: ${armedFighters[i].name} potenza: ${armedFighters[i].power}`);
-
-}
-console.log("\n");
-
-// Fase 4 - ⚔️ Combattimento
-
-console.log("### COMBATTIMENTO ###");
-
 const matchWinners = [];
 
-// controllo il numero dei qualificati
-if (armedFighters.length % 2 != 0) {
+// Pulsanti interattivi
 
-    // se dispari aggiungo un robot come combattente
-    armedFighters.push({
-        name: "Robot",
-        power: 4000,
-        weapon: "Laser Blaster"
-    });
+// pulsante per avanzare nel torneo
+const startBtn = document.getElementById("startBtn");
 
-    // visualizzo il robot
-    const last = armedFighters[armedFighters.length - 1];
-    console.log(`I partecipanti qualificati sono dispari, viene aggiunto: ${last.name} con potenza ${last.power} e arma ${last.weapon}`);
-    console.log("\n");
+// variabile per tenere traccia della fase
+let fase = 1;
 
-}
+startBtn.addEventListener("click", function () {
+    const el = document.querySelector("#combattenti h2");
+    el.classList.remove("hidden");
+    el.classList.add("visible");
 
-// se sono pari faccio partire i combattimenti
+    if (fase === 1) {
+        alert("🏆 Il torneo sta iniziando!");
+        alert("🔥 Scelta dell'arma");
 
-// ciclo sui combattenti selezionandoli a due a due
-for (i = 0; i < armedFighters.length; i += 2) {
+        // Fase 1 - 🔥 Scelta dell'Arma
 
-    // salvo i due combattenti
-    let first = armedFighters[i];
-    let second = armedFighters[i + 1];
-    let winner;
+        console.log("### SCELTA ARMA ###");
 
-    if (first.power < second.power) {
-        winner = second;
-        matchWinners.push(second);
-    } else if (first.power > second.power) {
-        winner = first;
-        matchWinners.push(first);
-    } else {
-        winner = first;
-        matchWinners.push(first);
+        for (i = 0; i < fighters.length; i++) {
+
+            // prendo in modo random un arma
+            let randomIndex = Math.floor(Math.random() * weapons.length);
+            let weapon = weapons[randomIndex];
+
+            // creo un nuovo oggetto che unisce combattente e arma
+            armedFighters.push({
+                name: fighters[i].name,
+                power: fighters[i].power,
+                weapon: weapon.name,
+                weaponPower: weapon.power
+            });
+
+            // aggiungo in pagina i combattenti
+            let p = document.createElement("p");
+            p.innerHTML = `Combattente: <strong>${armedFighters[i].name}</strong> - Potenza: <strong>${armedFighters[i].power}</strong> - Arma: <strong>${armedFighters[i].weapon}</strong> - Potenza Arma: <strong>${armedFighters[i].weaponPower}</strong>`;
+            fightersList.appendChild(p);
+
+            console.log(`${fighters[i].name} ha scelto l'arma: ${weapon.name} con potenza: ${weapon.power}`);
+        }
+        console.log("\n");
+
+        // aggiorno il testo del pulsante
+        startBtn.textContent = "💪 Vai all'Allenamento";
+        fase = 2;
+    } else if (fase === 2) {
+        alert("💪 Fase di Allenamento iniziata!");
+
+        // Fase 2 - 💪 Allenamento
+        console.log("### ALLENAMENTO ###");
+
+        // svuoto il contenitore e aggiorno il titolo UNA SOLA VOLTA
+        fightersList.innerHTML = "<h2>Combattenti dopo Allenamento</h2>";
+
+        // ciclo per allenare i combattenti
+        for (let i = 0; i < armedFighters.length; i++) {
+            let training = Math.floor(Math.random() * 100) + 1;
+            let newPower = armedFighters[i].power * training;
+            armedFighters[i].power = newPower + armedFighters[i].weaponPower;
+
+            // creo il paragrafo per il combattente
+            let p = document.createElement("p");
+            p.innerHTML = `Combattente: <strong>${armedFighters[i].name}</strong> - Potenza: <strong>${armedFighters[i].power}</strong> - Arma: <strong>${armedFighters[i].weapon}</strong> - Potenza Arma: <strong>${armedFighters[i].weaponPower}</strong>`;
+            fightersList.appendChild(p);
+
+            console.log(`${armedFighters[i].name} si è allenato, la sua nuova potenza è: ${armedFighters[i].power}`);
+        }
+
+        console.log("\n");
+
+        // aggiorno di nuovo il testo del pulsante
+        startBtn.textContent = "🎯 Vai alla qualificazione";
+        fase = 3;
+
+    } else if (fase === 3) {
+        alert("⚔️ Inizia la Qualificazione!");
+
+        // Fase 3 - 🎯 Qualificazione
+        console.log("### QUALIFICAZIONE ###");
+
+        // svuoto l'array e inserisco solo i qualificati
+        const qualificati = armedFighters.filter(f => f.power >= 2000);
+        armedFighters.length = 0;           // svuoto l'array originale
+        armedFighters.push(...qualificati); // reinserisco i qualificati
+
+        // aggiorno il titolo della sezione
+        fightersList.innerHTML = "<h2>Combattenti Qualificati</h2>";
+
+        // ristampo solo i qualificati
+        for (let i = 0; i < armedFighters.length; i++) {
+            let p = document.createElement("p");
+            p.innerHTML = `Qualificato: <strong>${armedFighters[i].name}</strong> - Potenza: <strong>${armedFighters[i].power}</strong> - Arma: <strong>${armedFighters[i].weapon}</strong> - Potenza Arma: <strong>${armedFighters[i].weaponPower}</strong>`;
+            fightersList.appendChild(p);
+
+            console.log(`Qualificato per il torneo: ${armedFighters[i].name} potenza: ${armedFighters[i].power}`);
+        }
+
+        console.log("\n");
+
+
+        startBtn.textContent = "⚔️ Vai al Combattimento";
+        fase = 4;
+
+    } else if (fase === 4) {
+        alert("⚔️ Combattimento!");
+        // Fase 4 - ⚔️ Combattimento
+
+        console.log("### COMBATTIMENTO ###");
+
+        // controllo il numero dei qualificati
+        if (armedFighters.length % 2 != 0) {
+
+            // se dispari aggiungo un robot come combattente
+            armedFighters.push({
+                name: "Robot",
+                power: 4000,
+                weapon: "Laser Blaster"
+            });
+
+            // visualizzo il robot
+            const last = armedFighters[armedFighters.length - 1];
+            alert(`🤖 È stato aggiunto il Robot: ${last.name} con potenza ${last.power} e arma ${last.weapon}`);
+            console.log(`I partecipanti qualificati sono dispari, viene aggiunto: ${last.name} con potenza ${last.power} e arma ${last.weapon}`);
+            console.log("\n");
+
+        }
+
+        // se sono pari faccio partire i combattimenti
+
+        // aggiorno il titolo della sezione
+        fightersList.innerHTML = "<h2>Incontri</h2>";
+
+        // creo un contenitore interno solo per i match
+        const matchesContainer = document.createElement("div");
+        matchesContainer.style.display = "flex";
+        matchesContainer.style.flexWrap = "wrap";
+        matchesContainer.style.gap = "16px";
+        matchesContainer.style.justifyContent = "center";
+
+        // ciclo sui combattenti selezionandoli a due a due
+        for (i = 0; i < armedFighters.length; i += 2) {
+
+            // salvo i due combattenti
+            let first = armedFighters[i];
+            let second = armedFighters[i + 1];
+            let winner;
+
+            if (first.power < second.power) {
+                winner = second;
+                matchWinners.push(second);
+            } else if (first.power > second.power) {
+                winner = first;
+                matchWinners.push(first);
+            } else {
+                winner = first;
+                matchWinners.push(first);
+            }
+
+            const matchDiv = document.createElement("div");
+            matchDiv.className = "match";
+            matchDiv.style.width = "200px";
+            matchDiv.innerHTML = `
+            <div class="contestants">
+                <div class="player">${first.name}</div>
+                <div class="player">${second.name}</div>
+                </div>
+                <div class="winner">${winner.name}</div>
+            `;
+            fightersList.appendChild(matchDiv);
+
+            console.log(`Incontro: ${first.name} VS ${second.name} il vincitore è ${winner.name}`);
+
+        }
+        console.log("\n");
+
+        startBtn.textContent = "🏆 Vai alla Premiazione";
+        fase = 5;
+
+    } else if (fase === 5) {
+        alert("🏆 Premiazione!");
+        console.log("### PREMIAZIONE ###");
+
+        // svuoto la sezione dei combattimenti ma lascio il titolo
+        fightersList.innerHTML = "<h2>Premiazione</h2>";
+
+        // ordino i vincitori degli incontri per potenza
+        const sortedWinners = [...matchWinners].sort((a, b) => b.power - a.power);
+
+        // creo i gradini nel podio
+        const podium = ["step1", "step2", "step3"];
+
+        for (let i = 0; i < 3 && i < sortedWinners.length; i++) {
+            const step = document.createElement("div");
+            step.className = "step";
+            step.id = podium[i];
+
+            step.innerHTML = `
+            <div class="podio-position">🥇${i + 1}° posto</div>
+            <div class="podio-name">${sortedWinners[i].name}</div>
+            <div class="podio-power">Potenza: ${sortedWinners[i].power}</div>
+        `;
+
+            // append al contenitore principale dei combattenti
+            fightersList.appendChild(step);
+            console.log(`${i + 1}° posto ${sortedWinners[i].name}`);
+        }
+
+        startBtn.textContent = "🔁 Ricomincia il Torneo";
+        fase = 1; // reset fase
     }
 
-    // aggiungo in pagina gli incontri
-    const matchDiv = document.createElement("div");
-    matchDiv.className = "match";
 
-    matchDiv.innerHTML = `
-    <div class="contestants">
-      <div class="player">${first.name}</div>
-      <div class="player">${second.name}</div>
-    </div>
-    <div class="winner">${winner.name}</div>
-     `;
+});
 
-    matchList.appendChild(matchDiv);
+// Funzione di reset del torneo
+function resetTorneo() {
+    // Svuoto tutti i contenitori mantenendo i titoli nascosti
+    fightersList.innerHTML = "<h2 class='hidden'>Combattenti</h2>";
 
-    console.log(`Incontro: ${first.name} VS ${second.name} il vincitore è ${winner.name}`);
+    // Svuoto gli array
+    armedFighters.length = 0;
+    matchWinners.length = 0;
 
+    // Ripristino il pulsante di avvio torneo
+    startBtn.textContent = "🔁 Ricomincia il Torneo";
 
+    // Reimposto la fase a 1
+    fase = 1;
+
+    alert("🔄 Torneo resettato!");
 }
-console.log("\n");
 
-// Fase 5 - 🏆 Premiazione
+// Event listener per il pulsante Reset
+resetBtn.addEventListener("click", resetTorneo);
 
-console.log("### PREMIAZIONE ###");
-
-// ordino i vincitori degli incontri per potenza
-matchWinners.sort((a, b) => b.power - a.power);
-
-// creo i gradini
-const podium = ["step1", "step2", "step3"];
-
-// stampo solo i primi tre nomi
-for (let i = 0; i < 3 && i < matchWinners.length; i++) {
-
-    // creo il div del gradino
-    const step = document.createElement("div");
-    step.className = "step";
-    step.id = podium[i];
-
-    // aggiungo il contenuto del vincitore
-    step.innerHTML = `
-        <div class="podio-position">🥇${i + 1}° posto</div>
-        <div class="podio-name">${matchWinners[i].name}</div>
-        <div class="podio-power">Potenza: ${matchWinners[i].power}</div>
-    `;
-
-    // append al contenitore principale
-    winnersList.appendChild(step);
-
-    console.log(`${i + 1}° posto ${matchWinners[i].name}`);
-}
 
 
