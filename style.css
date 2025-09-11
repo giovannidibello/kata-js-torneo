@@ -137,3 +137,46 @@ h2 {
 .podio-power {
     font-size: 1em;
 }
+
+/* PULSANTI */
+
+#pulsanti {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 10px;
+}
+
+/* 🔹 Stile base comune a tutti i pulsanti */
+.btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: 0.2s;
+}
+
+/* 🔹 Pulsante Start */
+#startBtn {
+    background: linear-gradient(45deg, #4CAF50, #2E7D32);
+}
+
+#startBtn:hover {
+    background: linear-gradient(45deg, #66BB6A, #388E3C);
+    transform: scale(1.05);
+}
+
+/* 🔹 Pulsante Reset */
+#resetBtn {
+    background: linear-gradient(45deg, #d32f2f, #b71c1c);
+}
+
+#resetBtn:hover {
+    background: linear-gradient(45deg, #e53935, #c62828);
+    transform: scale(1.05);
+}
