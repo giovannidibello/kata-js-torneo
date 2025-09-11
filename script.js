@@ -102,6 +102,11 @@ const weapons = [
     }
 ];
 
+// recupero il contenitore dal DOM dove mostrerò i combattenti e gli incontri e il podio
+const fightersList = document.getElementById("combattenti");
+const matchList = document.getElementById("incontri");
+const winnersList = document.getElementById("premiazione");
+
 // Combattenti con le armi
 const armedFighters = [];
 
@@ -123,10 +128,13 @@ for (i = 0; i < fighters.length; i++) {
         weaponPower: weapon.power
     });
 
+    // aggiungo in pagina i combattenti
+    let p = document.createElement("p");
+    p.innerHTML = `Combattente: <strong>${armedFighters[i].name}</strong> - Potenza: <strong>${armedFighters[i].power}</strong> - Arma: <strong>${armedFighters[i].weapon}</strong> - Potenza Arma: <strong>${armedFighters[i].weaponPower}</strong>`;
+    fightersList.appendChild(p);
+
     console.log(`${fighters[i].name} ha scelto l'arma: ${weapon.name} con potenza: ${weapon.power}`);
 }
-// console.log(armedFighters);
-
 console.log("\n");
 
 // Fase 2 - 💪 Allenamento
@@ -208,6 +216,20 @@ for (i = 0; i < armedFighters.length; i += 2) {
         matchWinners.push(first);
     }
 
+    // aggiungo in pagina gli incontri
+    const matchDiv = document.createElement("div");
+    matchDiv.className = "match";
+
+    matchDiv.innerHTML = `
+    <div class="contestants">
+      <div class="player">${first.name}</div>
+      <div class="player">${second.name}</div>
+    </div>
+    <div class="winner">${winner.name}</div>
+     `;
+
+    matchList.appendChild(matchDiv);
+
     console.log(`Incontro: ${first.name} VS ${second.name} il vincitore è ${winner.name}`);
 
 
@@ -221,8 +243,27 @@ console.log("### PREMIAZIONE ###");
 // ordino i vincitori degli incontri per potenza
 matchWinners.sort((a, b) => b.power - a.power);
 
+// creo i gradini
+const podium = ["step1", "step2", "step3"];
+
 // stampo solo i primi tre nomi
 for (let i = 0; i < 3 && i < matchWinners.length; i++) {
+
+    // creo il div del gradino
+    const step = document.createElement("div");
+    step.className = "step";
+    step.id = podium[i];
+
+    // aggiungo il contenuto del vincitore
+    step.innerHTML = `
+        <div class="podio-position">🥇${i + 1}° posto</div>
+        <div class="podio-name">${matchWinners[i].name}</div>
+        <div class="podio-power">Potenza: ${matchWinners[i].power}</div>
+    `;
+
+    // append al contenitore principale
+    winnersList.appendChild(step);
+
     console.log(`${i + 1}° posto ${matchWinners[i].name}`);
 }
 
